@@ -1,32 +1,36 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
+          <hellohead class="header"/>
     <router-view />
+    <hellofooter/>
   </div>
 </template>
+<script>
+import hellohead from "./components/header"
+import hellofooter from "./components/footer"
+export default {
+  components: {
+    hellohead,
+    hellofooter
+  },
+  created() {
+    this.$store.commit("LOAD_CART")
+  }
+}
+</script>
 
-<style>
+<style scoped>
+.header {
+       background-color: #fcfcfc;
+       border: 1px black;
+       max-height: 1em; 
+       margin:0;
+       margin-bottom: 2em;
+       padding: 0;
+}
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
+      max-width: 1240px;
+    margin: auto;
 
-#nav {
-  padding: 30px;
-}
-
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-#nav a.router-link-exact-active {
-  color: #42b983;
 }
 </style>
