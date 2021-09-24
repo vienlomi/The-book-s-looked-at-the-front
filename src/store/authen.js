@@ -107,7 +107,6 @@ export default {
                 let plJson = JSON.stringify(payload)
                 let response = await request.post(`/get-order/${context.state.user.user_id}`, plJson)
                 if (response.data) {
-                    console.log(response.data)
                 context.commit("SET_ORDER", response.data)
                 }
 

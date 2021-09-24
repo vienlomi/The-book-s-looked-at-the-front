@@ -53,7 +53,7 @@
     <button class="search-items" @click="search"> Search </button>
       </div>
 
-      <div v-for="order in orderList" :key="order.order_id">
+      <div v-for="order in pageList" :key="order.order_id">
         <h1 class="order-detail"> <span> Date: {{order.created_at}} </span> Total Price: {{order.total_price | curCy}}</h1>
         <div v-for="i in order.items" :key="i.product_id">
         <div order-img-container class="order-detail2">
@@ -64,6 +64,9 @@
           <p class="order-price">{{ i.unit_price | currency }}</p>
         </div>
         </div>
+      </div>
+      <div class="pagination" >
+        <button class="pag-items" :class="currentPage === p ? 'selected' : ''" v-for="p in totalPage" :key="p" @click="changePage(p)"> {{p}} </button>
       </div>
     </div>
   </div>
@@ -92,25 +95,23 @@ export default {
     initList() {
       return this.$store.state.authen.orderList;
     },
-    orderCount() {
-      return this.initList.length
-    },
     orderList() {
       let s = this.s
       let e = this.e
       return this.initList.filter((p) => {
-        console.log(Date.parse(p.created_at.split(" ")[0]))
-        console.log(s)
-        console.log(e)
         let time = Date.parse(p.created_at.split(" ")[0])
         return (time >= s) && (time <= e)
       }
       )
     },
+    totalPage() {
+      return Math.ceil(this.orderList.length / this.pageSize)
+    },
     pageList() {
-      let index = (this.currentPage - 1) * this.pageSize()
-      return this.orderList[index, index + this.pageSize]
-    }
+      let index = (this.currentPage - 1) * this.pageSize
+      return this.orderList.slice(index, index + this.pageSize)
+    },
+
 
   },
   methods: {
@@ -130,6 +131,9 @@ export default {
     search() {
       this.s = Date.parse(this.startDate)
       this.e = Date.parse(this.endDate)
+    },
+    changePage(p) {
+      this.currentPage = p
     }
   },
   filters: {
@@ -143,15 +147,7 @@ export default {
         this.$router.push("/login");
       }
     },
-    startDate() {
-      console.log(this.starDate)
-      console.log(this.endDate)
-    },
-    endDate() {
-      console.log(this.endDate)
-            console.log(this.starDate)
 
-    }
   },
   async created() {
     await this.$store.dispatch("getOrder");
@@ -179,6 +175,26 @@ export default {
   padding: 1em 0;
   
 }
+
+.pagination {
+  margin-top: 2em;
+  display:flex;
+  flex-direction: row;
+}
+
+.pag-items {
+  padding: 0 1.1em;
+  margin: auto;
+  font-size: 20px;
+  border-radius: 8px;
+  border: none;
+}
+
+.selected {
+  background-color: rgb(161, 130, 130);
+  
+}
+
 .search-items {
   margin: 5px;
   font-size: 20px;
@@ -209,6 +225,7 @@ h1 {
   border: none;
   text-align: left;
   font-size: 1rem;
+    font-family: sans-serif;
 }
 
 .side-bar button:hover {
