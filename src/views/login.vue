@@ -48,17 +48,16 @@ export default {
       if (this.user.password.length < 8) {
         this.$store.commit("SET_ERROR", "Password was too short");
       }
-       if (this.user.account.length < 6) {
+      if (this.user.account.length < 6) {
         this.$store.commit("SET_ERROR", "Invalid");
       }
-
     },
     ...mapActions(["login"]),
     ...mapMutations(["SET_ERROR"]),
     async signin() {
-              this.validate();
-      if (this.error == []) {
-          return
+      this.validate();
+      if (this.error.length > 0) {
+         return;
       }
       let identity = {};
       if (this.user.account.includes("@")) {
@@ -69,8 +68,7 @@ export default {
       identity.password = this.user.password;
       await this.login(identity);
       if (this.error.length == 0) {
-          console.log(this.pre_url)
-        if (this.pre_url == "/login" | this.pre_url == "/register") {
+        if ((this.pre_url == "/login") | (this.pre_url == "/register")) {
           this.$router.push("/");
         } else {
           this.$router.push({ path: this.pre_url });

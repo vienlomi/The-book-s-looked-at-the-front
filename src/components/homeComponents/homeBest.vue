@@ -1,9 +1,9 @@
 <template>
     <b-carousel :autoplay="false" indicator-custom :indicator-inside="false" :overlay="gallery" @click="switchGallery(true)">
         <b-carousel-item v-for="(p) in productList" :key="p.product_id">
-            <a class="image ">
+            <router-link :to="{name: 'productDetail', params : {id: p.product_id}}" class="image ">
                 <img :src="p.image_url">
-            </a>
+            </router-link>
         </b-carousel-item>
     </b-carousel>
 </template>

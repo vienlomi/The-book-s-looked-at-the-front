@@ -4,7 +4,10 @@
             <div class="card">
                 <div class="card-image">
                     <figure class="image is-5by4">
-                        <a :href="'product/'+ list.product_id"><img :src="list.image_url"></a>
+                                    <router-link :to="{name: 'productDetail', params : {id: list.product_id}}">
+                <img :src="list.image_url">
+            </router-link>
+                        <!-- <a :href="'product/'+ list.product_id"><img :src="list.image_url"></a> -->
                     </figure>
                     <!-- <b-tag type="is-danger" rounded style="position: absolute; top: 0;"><b>50%</b></b-tag> -->
                 </div>
